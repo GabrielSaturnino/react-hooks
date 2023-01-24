@@ -1,35 +1,56 @@
-import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// ---------Não usar hooks dentro de blocos!----------
 
 function App() {
-  const [reverse, setReverse] = useState(false);
-  const reverseClass = reverse ? 'reverse' : '';
+  const [counter, setCounter] = useState(0);
+  const [counter2, setCounter2] = useState(0);
 
-  const handleSpinClick = () => {
-    event.preventDefault();
-    setReverse(!reverse);
+  const eventfn = () => {
+    console.log('H1 clicado');
   };
+
+  // //Component DidUpdate -> executa toda vez que o componente atualiza!
+  // useEffect(() => {
+  //   console.log('Update!');
+  // });
+
+  // //Component DidMount -> executa 1x
+  // useEffect(() => {
+  //   console.log('component Did Mount!');
+  // }, []);
+
+  //Dependencia -> Parametro mudou, esse metodo sera chamado!
+  useEffect(() => {
+    console.log(`Dependencia! ${counter}`);
+    document.querySelector('h1')?.addEventListener('click', eventfn);
+    // a ? é um chain operator, se o elemento selecionado nao existir
+    // o codigo apos a ? não sera executado!
+  }, [counter]);
+
+  //willUmoint
+  useEffect(() => {
+    document.querySelector('h1')?.addEventListener('click', eventfn);
+
+    //componentWillUmount -> limpeza?
+    return () => {
+      document.querySelector('h1')?.removeEventListener('click', eventfn);
+    };
+  }, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className={`App-logo ${reverseClass}`} alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button type="button">
-          <a
-            className="App-link"
-            onClick={handleSpinClick}
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Reverse xD
-          </a>
-        </button>
-      </header>
+      <p>salve 1</p>
+      <h1>
+        Contador: {counter} Contador2: {counter2}
+      </h1>
+      <button onClick={() => setCounter(counter + 1)} type="button">
+        +
+      </button>
+      <button onClick={() => setCounter2(counter2 + 1)} type="button">
+        +2
+      </button>
     </div>
   );
 }
