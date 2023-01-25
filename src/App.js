@@ -1,12 +1,12 @@
 import P from 'prop-types';
 import './App.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // ---------Não usar hooks dentro de blocos!----------
 
-const Button = ({ incrementButton }) => {
+const Button = React.memo(function Button({ incrementButton }) {
   return <button onClick={() => incrementButton(10)}>+</button>;
-};
+});
 
 Button.propTypes = {
   incrementButton: P.func,
@@ -15,9 +15,9 @@ Button.propTypes = {
 function App() {
   const [counter, setCounter] = useState(0);
 
-  const incrementCounter = (num) => {
-    setCounter(counter + num);
-  };
+  const incrementCounter = useCallback((num) => {
+    setCounter((c) => c + num);
+  }, []);
 
   return (
     <div className="App">
