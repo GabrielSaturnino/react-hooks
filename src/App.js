@@ -12,6 +12,11 @@ Button.propTypes = {
   incrementButton: P.func,
 };
 
+const globalState = {
+  name: 'Gabriel',
+};
+const GlobalContext = React.createContext();
+
 function App() {
   const [counter, setCounter] = useState(0);
 
@@ -20,10 +25,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Contador: {counter}</h1>
-      <Button incrementButton={incrementCounter} />
-    </div>
+    <GlobalContext.Provider value={globalState}>
+      <div className="App">
+        <h1>Contador: {counter}</h1>
+        <Button incrementButton={incrementCounter} />
+      </div>
+    </GlobalContext.Provider>
   );
 }
 
